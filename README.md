@@ -1,233 +1,209 @@
-<p align="center">
-    <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
-    </a>
-    <h1 align="center">Yii 2 Basic Project Template</h1>
-    <br>
-</p>
+<h2>📘 Инструкция по развертыванию проекта "Сервис коротких ссылок"</h2>
 
-Yii 2 Basic Project Template is a skeleton [Yii 2](https://www.yiiframework.com/) application best for
-rapidly creating small projects.
+<h3>🛠️ Требования</h3>
+<ul>
+  <li>PHP 7.4+</li>
+  <li>Composer</li>
+  <li>MySQL/MariaDB</li>
+  <li>Веб-сервер (например, OpenServer, XAMPP, Nginx + PHP-FPM)</li>
+  <li>Yii2 Basic Template</li>
+</ul>
 
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
+<hr>
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-app-basic.svg)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-basic.svg)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![build](https://github.com/yiisoft/yii2-app-basic/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-app-basic/actions?query=workflow%3Abuild)
+<h3>1. 📥 Клонирование проекта</h3>
 
-DIRECTORY STRUCTURE
--------------------
+<pre><code>git clone https://github.com/your-username/short-url.git
+cd short-url
+</code></pre>
 
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
+<p>Или скопируй проект в <code>C:\OSPanel\domains\short-url</code>, если используешь OpenServer.</p>
 
+<hr>
 
+<h3>2. 📦 Установка зависимостей</h3>
 
-REQUIREMENTS
-------------
+<pre><code>composer install
+</code></pre>
 
-The minimum requirement by this project template that your Web server supports PHP 7.4.
+<hr>
 
+<h3>3. ⚙️ Настройка подключения к базе данных</h3>
 
-INSTALLATION
-------------
+<p>Создай базу данных, например <code>short_url</code>.</p>
 
-### Install via Composer
+<p>Пример в MySQL:</p>
 
-If you do not have [Composer](https://getcomposer.org/), you may install it by following the instructions
-at [getcomposer.org](https://getcomposer.org/doc/00-intro.md#installation-nix).
+<pre><code>CREATE DATABASE short_url CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+</code></pre>
 
-You can then install this project template using the following command:
+<p>Настрой файл <code>config/db.php</code>:</p>
 
-~~~
-composer create-project --prefer-dist yiisoft/yii2-app-basic basic
-~~~
-
-Now you should be able to access the application through the following URL, assuming `basic` is the directory
-directly under the Web root.
-
-~~~
-http://localhost/basic/web/
-~~~
-
-### Install from an Archive File
-
-Extract the archive file downloaded from [yiiframework.com](https://www.yiiframework.com/download/) to
-a directory named `basic` that is directly under the Web root.
-
-Set cookie validation key in `config/web.php` file to some random secret string:
-
-```php
-'request' => [
-    // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-    'cookieValidationKey' => '<secret random string goes here>',
-],
-```
-
-You can then access the application through the following URL:
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-### Install with Docker
-
-Update your vendor packages
-
-    docker-compose run --rm php composer update --prefer-dist
-    
-Run the installation triggers (creating cookie validation code)
-
-    docker-compose run --rm php composer install    
-    
-Start the container
-
-    docker-compose up -d
-    
-You can then access the application through the following URL:
-
-    http://127.0.0.1:8000
-
-**NOTES:** 
-- Minimum required Docker engine version `17.04` for development (see [Performance tuning for volume mounts](https://docs.docker.com/docker-for-mac/osxfs-caching/))
-- The default configuration uses a host-volume in your home directory `.docker-composer` for composer caches
-
-
-CONFIGURATION
--------------
-
-### Database
-
-Edit the file `config/db.php` with real data, for example:
-
-```php
-return [
+<pre><code>return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
+    'dsn' => 'mysql:host=localhost;dbname=short_url',
     'username' => 'root',
-    'password' => '1234',
-    'charset' => 'utf8',
+    'password' => '',
+    'charset' => 'utf8mb4',
 ];
-```
+</code></pre>
 
-**NOTES:**
-- Yii won't create the database for you, this has to be done manually before you can access it.
-- Check and edit the other files in the `config/` directory to customize your application as required.
-- Refer to the README in the `tests` directory for information specific to basic application tests.
+<hr>
 
+<h3>4. 🗃️ Применение миграций</h3>
 
-TESTING
--------
+<p>Выполни в терминале:</p>
 
-Tests are located in `tests` directory. They are developed with [Codeception PHP Testing Framework](https://codeception.com/).
-By default, there are 3 test suites:
+<pre><code>php yii migrate
+</code></pre>
 
-- `unit`
-- `functional`
-- `acceptance`
+<p>💡 Убедись, что <code>console</code> и <code>migrations</code> настроены корректно. В миграциях должны создаваться таблицы <code>link</code> и <code>link_log</code>.</p>
 
-Tests can be executed by running
+<hr>
 
-```
-vendor/bin/codecept run
-```
+<h3>5. 🖥️ Настройка веб-сервера</h3>
 
-The command above will execute unit and functional tests. Unit tests are testing the system components, while functional
-tests are for testing user interaction. Acceptance tests are disabled by default as they require additional setup since
-they perform testing in real browser. 
+<h4>Для OpenServer:</h4>
+<ul>
+  <li>Создай домен <code>short-url</code></li>
+  <li>Укажи путь к папке <code>web/</code> проекта:<br>
+  <code>C:\OSPanel\domains\short-url\web</code></li>
+  <li>Перезапусти OpenServer</li>
+</ul>
 
+<p>Теперь приложение будет доступно по адресу:</p>
 
-### Running  acceptance tests
+<pre><code>http://short-url/
+</code></pre>
 
-To execute acceptance tests do the following:  
+<hr>
 
-1. Rename `tests/acceptance.suite.yml.example` to `tests/acceptance.suite.yml` to enable suite configuration
+<h3>6. 🚀 Проверка работы</h3>
 
-2. Replace `codeception/base` package in `composer.json` with `codeception/codeception` to install full-featured
-   version of Codeception
+<ol>
+  <li>Перейди по адресу сайта.</li>
+  <li>Введи любую ссылку (например, <code>https://example.com</code>).</li>
+  <li>Нажми "Сократить".</li>
+  <li>Увидишь короткую ссылку и QR-код.</li>
+  <li>Перейди по короткой ссылке — должна произойти переадресация на оригинальный URL.</li>
+</ol>
 
-3. Update dependencies with Composer 
+<hr>
 
-    ```
-    composer update  
-    ```
+<h3>🔎 Полезные команды</h3>
 
-4. Download [Selenium Server](https://www.seleniumhq.org/download/) and launch it:
+<ul>
+  <li><code>php yii migrate</code> — применить миграции.</li>
+  <li><code>php yii cache/flush-all</code> — очистить кэш.</li>
+  <li><code>php yii migrate/create create_link_table</code> — создать новую миграцию.</li>
+</ul>
 
-    ```
-    java -jar ~/selenium-server-standalone-x.xx.x.jar
-    ```
+<h2>🧪 Тестовое задание: Сервис коротких ссылок с QR</h2>
 
-    In case of using Selenium Server 3.0 with Firefox browser since v48 or Google Chrome since v53 you must download [GeckoDriver](https://github.com/mozilla/geckodriver/releases) or [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and launch Selenium with it:
+<p><strong>📎 Задание:</strong> Выполните тестовое задание. Прикрепите ссылку на документ.</p>
 
-    ```
-    # for Firefox
-    java -jar -Dwebdriver.gecko.driver=~/geckodriver ~/selenium-server-standalone-3.xx.x.jar
-    
-    # for Google Chrome
-    java -jar -Dwebdriver.chrome.driver=~/chromedriver ~/selenium-server-standalone-3.xx.x.jar
-    ``` 
-    
-    As an alternative way you can use already configured Docker container with older versions of Selenium and Firefox:
-    
-    ```
-    docker run --net=host selenium/standalone-firefox:2.53.0
-    ```
+<hr>
 
-5. (Optional) Create `yii2basic_test` database and update it by applying migrations if you have them.
+<h3>📌 Описание задачи</h3>
 
-   ```
-   tests/bin/yii migrate
-   ```
+<ul>
+  <li>Разработать сервис коротких ссылок с поддержкой генерации QR-кода.</li>
+  <li>Стек технологий: <strong>Yii2</strong>, <strong>MySQL/MariaDB</strong>, <strong>jQuery</strong>, <strong>Bootstrap</strong>.</li>
+  <li>Тип проекта: <strong>Yii2 Basic</strong>.</li>
+</ul>
 
-   The database configuration can be found at `config/test_db.php`.
+<hr>
 
+<h3>🧩 Функциональные требования</h3>
 
-6. Start web server:
+<ol>
+  <li>На главной странице расположена форма <code>&lt;input&gt;</code> для ввода URL.</li>
+  <li>Рядом — кнопка <strong>ОК</strong>.</li>
+  <li>При нажатии:
+    <ul>
+      <li>Проверяется валидность URL (формат, <code>http://</code> или <code>https://</code> и т.д.).</li>
+      <li>Проверяется доступность ресурса.</li>
+      <li>Если ресурс недоступен — отображается сообщение: <strong>"Данный URL не доступен"</strong>.</li>
+      <li>Если проверка пройдена:
+        <ul>
+          <li>Сохраняем ссылку в БД.</li>
+          <li>Генерируем короткую ссылку.</li>
+          <li>Создаём QR-код.</li>
+        </ul>
+      </li>
+      <li>Пользователь получает:
+        <ul>
+          <li>Сгенерированную короткую ссылку.</li>
+          <li>QR-код.</li>
+          <li>Без перезагрузки страницы (через Ajax).</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
 
-    ```
-    tests/bin/yii serve
-    ```
+<hr>
 
-7. Now you can run all available tests
+<h3>📱 QR-код</h3>
 
-   ```
-   # run all available tests
-   vendor/bin/codecept run
+<ul>
+  <li>QR-код открывается при наведении камеры телефона.</li>
+  <li>Содержит короткую ссылку.</li>
+  <li>Переход по QR-коду должен работать корректно.</li>
+</ul>
 
-   # run acceptance tests
-   vendor/bin/codecept run acceptance
+<hr>
 
-   # run only unit and functional tests
-   vendor/bin/codecept run unit,functional
-   ```
+<h3>🔀 Редирект</h3>
 
-### Code coverage support
+<ul>
+  <li>При переходе по короткой ссылке происходит перенаправление на оригинальный URL.</li>
+</ul>
 
-By default, code coverage is disabled in `codeception.yml` configuration file, you should uncomment needed rows to be able
-to collect code coverage. You can run your tests and collect coverage with the following command:
+<hr>
 
-```
-#collect coverage for all tests
-vendor/bin/codecept run --coverage --coverage-html --coverage-xml
+<h3>📊 Логирование переходов</h3>
 
-#collect coverage only for unit tests
-vendor/bin/codecept run unit --coverage --coverage-html --coverage-xml
+<ul>
+  <li>При каждом переходе:
+    <ul>
+      <li>Фиксируется внешний IP пользователя.</li>
+      <li>Обновляется счётчик переходов.</li>
+    </ul>
+  </li>
+</ul>
 
-#collect coverage for unit and functional tests
-vendor/bin/codecept run functional,unit --coverage --coverage-html --coverage-xml
-```
+<hr>
 
-You can see code coverage output under the `tests/_output` directory.
+<h3>🗃️ База данных</h3>
+
+<ul>
+  <li>Структура на ваше усмотрение.</li>
+  <li>Миграции — на ваше усмотрение. Если нет — предоставить <strong>SQL dump</strong> и <strong>версию СУБД</strong>.</li>
+</ul>
+
+<hr>
+
+<h3>📦 Ограничения</h3>
+
+<ul>
+  <li><strong>Нельзя</strong> использовать сторонние API-сервисы.</li>
+  <li>Все функции — локально через PHP, Yii2 и доступные библиотеки.</li>
+</ul>
+
+<hr>
+
+<h3>📑 Инструкция по развертыванию</h3>
+
+<p>Размещение — в отдельном разделе <code>README.md</code> </p>
+
+<hr>
+
+<h3>📁 Что сдавать?</h3>
+
+<ul>
+  <li>Исходный код проекта.</li>
+  <li>Инструкция по развёртыванию.</li>
+  <li>Ссылка на демонстрацию или архив/репозиторий (например, GitHub).</li>
+</ul>
+
